@@ -1,5 +1,6 @@
 # I'll add more to this later
 
+'''
 import numpy as np
 import random
 from numpy.random import randn
@@ -59,6 +60,7 @@ class Animal:
     birthFa = int(self.fatigue + (np.random.randn(1)[0] * 5))
     if birthFa < 5:
       birthFa = 5
+    
     # save for passing on to offspring
     inheritance = {'birthEn': birthEn, 'birthRe': birthRe, 'birthFa': birthFa}
     return [self.name, self.kingdom, inheritance, birthEn, birthRe, birthFa]
@@ -107,7 +109,8 @@ class Plant:
     birthEn = int(self.energy + (np.random.randn(1)[0] * 20))
     birthRe = int(self.repro + (np.random.randn(1)[0] * 10))
     birthFa = 0
-    
+
     # save for passing on to offspring
     inheritance = {'birthEn': birthEn, 'birthRe': birthRe, 'birthFa': birthFa}
     return [self.name, self.kingdom, inheritance, birthEn, birthRe, birthFa]
+'''
