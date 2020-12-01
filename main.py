@@ -1,7 +1,11 @@
+# TO DO: reproduction
 # TO FIX: ANIMALS CAN MOVE MORE THAN ONCE IF THEY MOVE DOWN OR RIGHT
 
-import numpy
+import numpy as np
 from numpy import random
+
+import matplotlib
+import matplotlib.pyplot as plt
 
 class Animal:
   def __init__(self, name):
@@ -22,14 +26,24 @@ class Reef:
   def __init__(self, length):
     # length = side length of the array
     self.length = length
-    self.array = random.randint(4, size=(length, length))
+    self.array = random.choice([0, 1, 2, 3], p=[0.25, 0.35, 0.3, 0.1], size=(length, length)) # ratios based off of https://science.sciencemag.org/content/349/6252/aac6284
+    self.shark_data = []
+    self.fish_data = []
+    self.algae_data = []
 
   # update the reef
   def update(self):
     # go through all the indexes of the array line by line
-    for (x, y), cell in numpy.ndenumerate(self.array):
+    for (x, y), cell in np.ndenumerate(self.array):
       if cell != 0 and cell != 1:
         self._update_cell(x, y, cell)
+    
+    self.shark_data.append(np.count_nonzero(self.array == 3))
+    self.fish_data.append(np.count_nonzero(self.array == 2))
+    self.algae_data.append(np.count_nonzero(self.array == 1))
+    print("Sharks: " + str(self.shark_data))
+    print("Fish: " + str(self.fish_data))
+    print("Algae: " + str(self.algae_data))
   
   # update a single cell that isn't empty or algae
   def _update_cell(self, x, y, cell):
@@ -68,7 +82,8 @@ class Reef:
     self.array[x, y] = 0
   
   def _reproduce(self, x, y, new_x, new_y):
-    pass
+    if np.any(self.array):
+      print("reproduce")
   
   def _eat(self, x, y, new_x, new_y):
     if self.array[new_x, new_y] == self.array[x, y] - 1:
@@ -80,3 +95,8 @@ if __name__ == "__main__":
     print("Day", i)
     print(reef.array)
     reef.update()
+
+plt.plot(reef.shark_data)
+plt.plot(reef.fish_data)
+plt.plot(reef.algae_data)
+plt.show()
