@@ -1,24 +1,10 @@
-# TO DO: reproduction
+# TO DO: algae spawning
 # TO FIX: ANIMALS CAN MOVE MORE THAN ONCE IF THEY MOVE DOWN OR RIGHT
 
 import numpy as np
 from numpy import random
 
-import matplotlib
 import matplotlib.pyplot as plt
-
-class Animal:
-  def __init__(self, name):
-    self.name = name
-
-class Shark(Animal):
-  pass
-
-class Fish(Animal):
-  pass
-
-class Algae:
-  pass
 
 class Reef:
 
@@ -26,7 +12,7 @@ class Reef:
   def __init__(self, length):
     # length = side length of the array
     self.length = length
-    self.array = random.choice([0, 1, 2, 3], p=[0.25, 0.35, 0.3, 0.1], size=(length, length)) # ratios based off of https://science.sciencemag.org/content/349/6252/aac6284
+    self.array = random.choice([0, 1, 2, 3], p=[0.25, 0.45, 0.2, 0.1], size=(length, length))
     self.shark_data = []
     self.fish_data = []
     self.algae_data = []
@@ -38,12 +24,15 @@ class Reef:
       if cell != 0 and cell != 1:
         self._update_cell(x, y, cell)
     
+    # count at the end of each day
     self.shark_data.append(np.count_nonzero(self.array == 3))
     self.fish_data.append(np.count_nonzero(self.array == 2))
     self.algae_data.append(np.count_nonzero(self.array == 1))
     print("Sharks: " + str(self.shark_data))
     print("Fish: " + str(self.fish_data))
     print("Algae: " + str(self.algae_data))
+
+    # _algae_spawn() at the end of each day so algae doesnt just get eaten to extinction
   
   # update a single cell that isn't empty or algae
   def _update_cell(self, x, y, cell):
@@ -70,9 +59,10 @@ class Reef:
       # move if new cell is empty
       if self.array[new_x, new_y] == 0:
         self._move(x, y, new_x, new_y)
-      # reproduce if new cell has same animal
+      # reproduce if new cell has same animal and there are empty cells
       elif self.array[new_x, new_y] == self.array[x, y]:
-        self._reproduce(x, y, new_x, new_y)
+        if np.any(self.array == 0):
+          self._reproduce(x, y)
       # if all else fails, eating is always the correct answer
       else:
         self._eat(x, y, new_x, new_y)
@@ -81,9 +71,23 @@ class Reef:
     self.array[new_x, new_y] = self.array[x, y]
     self.array[x, y] = 0
   
-  def _reproduce(self, x, y, new_x, new_y):
-    if np.any(self.array):
-      print("reproduce")
+  def _reproduce(self, x, y):
+    x_choices = []
+    y_choices = []
+
+    # if there's an empty cell, add it to the list
+    for (i,j), cell in np.ndenumerate(self.array):
+      if cell == 0:
+        x_choices.append(i)
+        y_choices.append(j)
+
+    spawn_x = random.choice(x_choices)
+    spawn_y = random.choice(y_choices)
+
+    # spawn the animal in a random empty space
+    self.array[spawn_x, spawn_y] = self.array[x, y]
+
+    print("repro at: (" + str(spawn_x) + ", " + str(spawn_y) + ")")
   
   def _eat(self, x, y, new_x, new_y):
     if self.array[new_x, new_y] == self.array[x, y] - 1:
