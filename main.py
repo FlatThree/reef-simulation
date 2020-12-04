@@ -19,6 +19,7 @@ class Reef:
 
   # update the reef
   def update(self):
+    print("Updating...")
     # go through all the indexes of the array line by line
     for (x, y), cell in np.ndenumerate(self.array):
       if cell != 0 and cell != 1:
@@ -94,13 +95,33 @@ class Reef:
       self._move(x, y, new_x, new_y)
 
 if __name__ == "__main__":
-  reef = Reef(10)
-  for i in range(10):
+  size = int(input("\nSize of the reef?\nMust be at least 10.\n"))
+
+  if size < 10:
+    valid_size = False
+
+    while valid_size is False:
+      size = int(input("\nInvalid answer.\nMust be at least 10.\n"))
+      if size >= 10:
+        valid_size = True
+  
+  days = int(input("\nHow many days?\nMust be at least 1.\n"))
+
+  if days < 1:
+    valid_days = False
+
+    while valid_days is False:
+      days = int(input("\nInvalid answer.\nMust be at least 1.\n"))
+      if size >= 1:
+        valid_days = True
+
+  reef = Reef(size)
+  for i in range(days):
     print("Day", i)
     print(reef.array)
     reef.update()
 
-plt.plot(reef.shark_data)
-plt.plot(reef.fish_data)
-plt.plot(reef.algae_data)
+plt.plot(reef.shark_data, marker="o")
+plt.plot(reef.fish_data, marker="o")
+plt.plot(reef.algae_data, marker="o")
 plt.show()
