@@ -95,8 +95,8 @@ class Reef:
   
   def _algae_spawn(self):
     if np.any(self.array == 0):
-      # spawn 1/3 of the current algae
-      for i in range(int(self.algae_data[-1]/3)):
+      # spawn 1/4 of the current algae
+      for i in range(int(self.algae_data[-1]/4)):
         x_choices = []
         y_choices = []
 
@@ -146,6 +146,6 @@ plt.plot(reef.fish_data, marker="o")
 plt.plot(reef.algae_data, marker="o")
 
 labels = ["Tiger Sharks", "Clownfish", "Algae"]
-
 plt.legend(labels)
+
 plt.show()
