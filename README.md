@@ -7,4 +7,4 @@ A rudimentary simulation of a reef with tiger sharks, clownfish, and algae.
 3. Input the desired amount of days to run through. (10 recommended)
 4. Wait.
 
-If more than one person tries to run it at the same time, then you might face some problems.
+If more than one person tries to run it at the same time, then you'll face some problems.
