@@ -2,7 +2,6 @@
 
 import numpy as np
 from numpy import random
-
 import matplotlib.pyplot as plt
 
 class Reef:
@@ -113,34 +112,38 @@ class Reef:
         self.array[spawn_x, spawn_y] = 1
         #print("algae repro at: (" + str(spawn_x) + ", " + str(spawn_y) + ")")
 
-if __name__ == "__main__":
-  size = int(input("\nSize of the reef?\nMust be at least 10.\n"))
 
-  if size < 10:
-    valid_size = False
+# get the desired reef size and how many days to go through
+size = int(input("\nSize of the reef?\nMust be at least 10.\n"))
 
-    while valid_size is False:
-      size = int(input("\nInvalid answer.\nMust be at least 10.\n"))
-      if size >= 10:
-        valid_size = True
-  
-  days = int(input("\nHow many days?\nMust be at least 1.\n"))
+if size < 10:
+  valid_size = False
 
-  if days < 1:
-    valid_days = False
+  while valid_size is False:
+    size = int(input("\nInvalid answer.\nMust be at least 10.\n"))
+    if size >= 10:
+      valid_size = True
 
-    while valid_days is False:
-      days = int(input("\nInvalid answer.\nMust be at least 1.\n"))
-      if size >= 1:
-        valid_days = True
+days = int(input("\nHow many days?\nMust be at least 1.\n"))
 
-  reef = Reef(size)
-  for i in range(days):
-    print("Day", i)
-    print(reef.array)
-    reef.update()
+if days < 1:
+  valid_days = False
 
-# plotting the data
+  while valid_days is False:
+    days = int(input("\nInvalid answer.\nMust be at least 1.\n"))
+    if size >= 1:
+      valid_days = True
+
+
+# actually do stuff now
+reef = Reef(size)
+for i in range(days):
+  print("Day", i)
+  print(reef.array)
+  reef.update()
+
+
+# plot the data
 plt.plot(reef.shark_data, marker="o")
 plt.plot(reef.fish_data, marker="o")
 plt.plot(reef.algae_data, marker="o")
